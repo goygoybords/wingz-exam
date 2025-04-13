@@ -14,6 +14,7 @@ import os
 import time
 
 from pathlib import Path
+from datetime import timedelta
 
 root = environ.Path(__file__) - 3  # (/config/settings/base.py - 3 = /)
 
@@ -48,6 +49,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # 3rd-party apps
+    'rest_framework',
+    'rest_framework_simplejwt.token_blacklist',
 
     #local apps
     'apps.user',
@@ -119,6 +124,23 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# REST FRAMEWORK
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),     # short-lived token
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),        # long-lived refresh
+    'ROTATE_REFRESH_TOKENS': True,                      # issue new refresh token on use
+    'BLACKLIST_AFTER_ROTATION': True,                   # blacklist old refresh tokens
+    'AUTH_HEADER_TYPES': ('Bearer',),                   # Authorization: Bearer <token>
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
