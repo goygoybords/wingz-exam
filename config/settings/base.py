@@ -39,7 +39,7 @@ ALLOWED_HOSTS = []
 AUTH_USER_MODEL = 'user.User'
 BASE_URL = env('BASE_URL')
 DEBUG = env('DEBUG')
-
+PAGE_SIZE = env.int("PAGE_SIZE", default=10)
 
 # Application definition
 
@@ -133,6 +133,8 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
     ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': PAGE_SIZE,
 }
 
 SIMPLE_JWT = {
