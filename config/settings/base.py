@@ -98,17 +98,22 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE':  env('DATABASE_ENGINE', default='django.db.backends.postgresql'),
-        'NAME': env('DATABASE_NAME'),
-        'USER': env('DATABASE_USER'),
-        'PASSWORD': env('DATABASE_PASSWORD'),
-        'HOST': env('DATABASE_HOST'),
-        'PORT': env('DATABASE_PORT'),
-        'OPTIONS': {'sslmode': env('SSL_REQUIRE')},
+if env('USE_DATABASE_URL', default='true') == 'true':
+    DATABASES = {
+        'default': env.db(),
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': env('DATABASE_ENGINE', default='django.db.backends.postgresql'),
+            'NAME': env('DATABASE_NAME'),
+            'USER': env('DATABASE_USER'),
+            'PASSWORD': env('DATABASE_PASSWORD'),
+            'HOST': env('DATABASE_HOST'),
+            'PORT': env('DATABASE_PORT'),
+            'OPTIONS': {'sslmode': env('SSL_REQUIRE', default='disable')},
+        }
+    }
 
 
 # Password validation
